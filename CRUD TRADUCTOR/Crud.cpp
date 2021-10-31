@@ -2,6 +2,7 @@
 #include <string.h>
 #include <windows.h>
 
+
 using namespace std;
 const char *nombre_archivo = "archivo.dat";
 const char *nombre_archivo_temp = "archivo_aux.dat";
@@ -19,6 +20,7 @@ void AltEnter();
 //fin de manejo de interfaz//
 
 void menu();
+void traducir();
 void crear();
 void leer();
 void actualizar();
@@ -55,6 +57,7 @@ void menu(){
 	
 	switch(opc)
 	{
+		case 1: traducir();				;break;
 		case 2: crear();		 		;break;
  		case 3: leer();					;break;
  		case 4: actualizar();	 		;break;
@@ -64,6 +67,48 @@ void menu(){
 	}
 		
 }
+void traducir(){
+	
+	FILE* archivo = fopen(nombre_archivo,"rb");
+		
+		if (!archivo){
+			archivo = fopen(nombre_archivo,"w+b");	
+		}
+		
+	palabra Palabra;
+		
+	const int MAX = 2500;
+	char traduccion[MAX];
+	
+	string palabraTraducida;	
+	cout<<""<<endl;
+	cout<<"--------------------------------------------------------------------------------"<<endl;
+	cout<<"Ingresa el texto a traducir finalizando con $"<<endl;
+	cout<<"--------------------------------------------------------------------------------"<<endl;
+	
+	//cin.get(traduccion,MAX,'$'); //ingresamos lineas multiples hasta que encuentre el caracter en especial
+	
+	cin>>palabraTraducida;
+	
+	cout<<"--------------------------------------------------------------------------------"<<endl;
+	cout<<"Traduccion del texto ingresado"<<endl;
+	cout<<"--------------------------------------------------------------------------------"<<endl;
+	
+	//ingresar arreglo para poder validar palabra por palabra para luego escribirla (pendiente)
+	
+	while(fread(&Palabra,sizeof(palabra),1,archivo)){		
+		std::string str= Palabra.palabra;
+		int longitud = str.length();
+		if (str.substr (0,longitud) == palabraTraducida) {
+			cout<<Palabra.significado;				
+		}
+	}	
+		
+	Gotoxy(30,0);system("pause");		
+	menu();
+		
+}
+
 void leer(){
 	
 		system("cls");
@@ -75,34 +120,34 @@ void leer(){
 		palabra Palabra;
 		
 		int id=0;	
-		fwrite(&Palabra,sizeof(palabra),1,archivo);
+	
 		
 		Gotoxy(31,1);cout<<"----------------------------------------";
 		Gotoxy(40,2);cout<<"Listado de palabras";
 		Gotoxy(31,3);cout<<"----------------------------------------";
 	
-					
 		
-		do{
-			
-			Gotoxy(5,5);cout<<"Id";
-			Gotoxy(15,5);cout<<"Palabra";
-			Gotoxy(40,5);cout<<"Significado";	
-			Gotoxy(70,5);cout<<"Funcionabilidad";	
 		
-			Gotoxy(5,6 + id - 1);cout<<id;
-			Gotoxy(15,6 + id - 1);cout<<Palabra.palabra;
-			Gotoxy(40,6 + id - 1);cout<<Palabra.significado;		
-			Gotoxy(70,6 + id - 1);cout<<Palabra.funcionabilidad;
 						
-			fread(&Palabra,sizeof(palabra),1,archivo);
-			
-			id+=1;
-			
-		}while(feof(archivo)==0);
-		
-		
-		
+				do{	
+																												 	
+					Gotoxy(5,5);cout<<"Id";
+					Gotoxy(15,5);cout<<"Palabra";
+					Gotoxy(40,5);cout<<"Significado";	
+					Gotoxy(70,5);cout<<"Funcionabilidad";	
+				
+					Gotoxy(5,6 + id - 1);cout<<id;
+					Gotoxy(15,6 + id - 1);cout<<Palabra.palabra;
+					Gotoxy(40,6 + id - 1);cout<<Palabra.significado;		
+					Gotoxy(70,6 + id - 1);cout<<Palabra.funcionabilidad;
+								
+					fread(&Palabra,sizeof(palabra),1,archivo);
+					
+					id+=1;
+				
+							
+				}while(feof(archivo)==0);
+				
 		fclose(archivo);	
 		Gotoxy(30,0);system("pause");
 		
@@ -158,7 +203,7 @@ void crear(){
 		
 		TextColor(8);
 		
-	 	Gotoxy(30,11);cout<<"Ingrese la palabra:                                                                                                                     ";
+	 	Gotoxy(30,11);cout<<"Ingrese la palabra                                                                                                                 ";
 		Gotoxy(30,12);cout<<"Ingrese el significado:                                                                                                                 ";
 		Gotoxy(30,13);cout<<"Ingrese la funcionabilidad:                                                                                                             ";
 		
