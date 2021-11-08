@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string.h>
 #include <windows.h>
-
+#include <iterator>
+#include <sstream>
+#include <string>
 
 using namespace std;
 const char *nombre_archivo = "archivo.dat";
@@ -27,8 +29,8 @@ void actualizar();
 void borrar();
 
 main(){
-AltEnter();	
-//system("mode con: cols=150");	
+//AltEnter();	
+system("mode con: cols=170");	
 menu();
 }
 
@@ -62,8 +64,7 @@ void menu(){
  		case 3: leer();					;break;
  		case 4: actualizar();	 		;break;
  		case 5: borrar();	 			;break;
- 		case 6: exit(-1);				;break;  
-		default:cout<<"Opcion no valida";  
+ 		case 6: exit(-1);				;break;  	
 	}
 		
 }
@@ -86,28 +87,56 @@ void traducir(){
 	cout<<"Ingresa el texto a traducir finalizando con $"<<endl;
 	cout<<"--------------------------------------------------------------------------------"<<endl;
 	
-	//cin.get(traduccion,MAX,'$'); //ingresamos lineas multiples hasta que encuentre el caracter en especial
+	cin.get(traduccion,MAX,'$'); //ingresamos lineas multiples hasta que encuentre el caracter en especial
 	
-	cin>>palabraTraducida;
+	//cin>>traduccion;
 	
 	cout<<"--------------------------------------------------------------------------------"<<endl;
 	cout<<"Traduccion del texto ingresado"<<endl;
 	cout<<"--------------------------------------------------------------------------------"<<endl;
-	
-	//ingresar arreglo para poder validar palabra por palabra para luego escribirla (pendiente)
-	
-	while(fread(&Palabra,sizeof(palabra),1,archivo)){		
-		std::string str= Palabra.palabra;
-		int longitud = str.length();
-		if (str.substr (0,longitud) == palabraTraducida) {
-			cout<<Palabra.significado;				
-		}
-	}	
-		
+			
+	string line = traduccion;
+    string arr[100];
+        
+    int i = 0;
+    int validador = 0;	
+    stringstream ssin(line);
+        
+    while (ssin.good() && i < 100){
+        ssin >> arr[i];
+        ++i;        
+    }  
+		     	     
+		 for (i = 0; i <= i; i++){
+		 	
+		 		string palabraBuscar = arr[i];
+				string palabraIgnorar;
+				
+		while(fread(&Palabra,sizeof(palabra),1,archivo)){				
+				
+				std::string str= Palabra.palabra;
+				int longitud = str.length();
+											 	
+				if (str.substr (0,longitud) == palabraBuscar) {
+					cout<<Palabra.significado<<" ";	
+					palabraIgnorar = palabraBuscar;				
+				}																							    					
+			}
+			
+			if (palabraBuscar != palabraIgnorar && validador == 0) {
+					cout<<arr[i]<<" ";					
+					validador = 1;
+			}  											
+    	}
+    	
+    fclose(archivo);	
+      	
 	Gotoxy(30,0);system("pause");		
-	menu();
+	leer();
 		
 }
+
+
 
 void leer(){
 	
